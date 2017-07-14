@@ -4,6 +4,7 @@ var path = require('path');
 var expressValidator = require('express-validator');
 var mongojs = require('mongojs');
 var db = mongojs('test', ['users']);
+var ObjectId = mongojs.ObjectId;
 var app = express();
 
 //View Engine
@@ -80,6 +81,16 @@ app.post('/users/add', function(req, res){
         res.redirect('/');
     });
   }
+});
+
+// Delete User Action
+app.delete('/users/delete/:id', function(req, res){
+  db.users.remove({_id: ObjectId(req.params.id)}, function(err, result){
+    if(err){
+      console.log(err);
+    }
+    res.redirect('/');
+  });
 });
 
 app.listen(3000, function(){
